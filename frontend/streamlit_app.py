@@ -32,7 +32,7 @@ if "generated_prompt" not in st.session_state:
     st.session_state.generated_prompt = ""
 
 
-# CALLBACK FUNCTIONS
+# Callback Functions
 def set_example_text(text):
     st.session_state.prediction_input = text
 
@@ -43,7 +43,7 @@ def clear_prompt():
     st.session_state.generated_prompt = ""
 
 
-# API FUNCTIONS
+# API Functions
 def check_api_health():
     try:
         r = requests.get(f"{API_BASE_URL}/health", timeout=5)
