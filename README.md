@@ -39,7 +39,3 @@ Built a complete client-server application that predicts the next word in a sequ
 → Overfitting prevention with early stopping
 → Real-time prediction with low latency
 ```
-
-This project demonstrates the practical application of NLP in building production-ready systems with modern web frameworks.
-
-Key learnings: Data preprocessing, model optimization, API development, and end-to-end system integration.
