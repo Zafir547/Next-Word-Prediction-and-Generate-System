@@ -22,10 +22,6 @@ if "generated_prompt" not in st.session_state:
     st.session_state.generated_prompt = ""
 
 # Callback Functions
-# IMPORTANT:
-# We use callbacks instead of directly modifying
-# session_state after widget creation.
-
 def set_example_text(text):
     st.session_state.prediction_input = text
 
