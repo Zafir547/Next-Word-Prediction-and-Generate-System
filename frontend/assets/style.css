@@ -1,0 +1,113 @@
+.main-header {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(90deg, #667eea 0%, #776ba2 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.prediction-card {
+    background: linear-gradient(135deg, #667eea 0%, #776ba2 100%);
+    padding: 1.5rem;
+    border-radius: 10px;
+    color: white;
+    margin: 0.5rem 0;
+    transition: transform 0.2s;
+}
+
+.prediction-card:hover {
+    transform: translateY(-5px);
+
+}
+
+.word-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.probability-text {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.stButton button {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    width: 100%;
+}
+
+.stButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.generated-text-box {
+    background: #7a8bad;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 5px solid #667eea;
+    margin: 1rem 0;
+}
+
+.state-box {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    padding: 1rem;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
+
+.prediction-item {
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 0.5rem 0;
+    color: white;
+}
+
+.predict-high {
+    background: #667eea;
+}
+
+.predict-medium {
+    background: #764ba2;
+}
+
+.prediction-low {
+    background: #f093fb;
+}
+
+.prediction-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prediction-word {
+    font-size: 1.3rem;
+}
+
+.prediction-prob {
+    font-size: 1.2rem;
+}
+
+.progress-bar {
+    background: rgba(255, 255, 255, 0.3);
+    height: 8px;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+}
+
+.progress-fill {
+    background: white;
+    height: 100%;
+    border-radius: 5px;
+}
