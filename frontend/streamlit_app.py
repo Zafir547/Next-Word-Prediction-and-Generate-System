@@ -1,10 +1,20 @@
+import os
 import time
 import requests
 import streamlit as st
 from typing import List, Dict
 
-# Configuration
-API_BASE_URL = "http://localhost:8000"
+# CONFIGURATION - DEPLOYMENT READY
+
+# Get API URL from environment or Streamlit secrets
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+
+# Try to load from Streamlit secrets (for cloud deployment)
+try:
+    if hasattr(st, 'secrets') and "API_BASE_URL" in st.secrets:
+        API_BASE_URL = st.secrets["API_BASE_URL"]
+except:
+    pass
 
 # Page Configuration
 st.set_page_config(
@@ -21,7 +31,8 @@ if "prediction_input" not in st.session_state:
 if "generated_prompt" not in st.session_state:
     st.session_state.generated_prompt = ""
 
-# Callback Functions
+
+# CALLBACK FUNCTIONS
 def set_example_text(text):
     st.session_state.prediction_input = text
 
@@ -31,13 +42,14 @@ def set_prompt_text(text):
 def clear_prompt():
     st.session_state.generated_prompt = ""
 
-# API Functions
+
+# API FUNCTIONS
 def check_api_health():
     try:
         r = requests.get(f"{API_BASE_URL}/health", timeout=5)
         return r.status_code == 200, r.json()
-    except:
-        return False, None
+    except Exception as e:
+        return False, {"error": str(e)}
 
 def predict_next_word(text, top_k, temperature):
     try:
@@ -45,7 +57,8 @@ def predict_next_word(text, top_k, temperature):
 
         r = requests.post(
             f"{API_BASE_URL}/predict",
-            json={"text": text, "top_k": top_k, "temperature": temperature}
+            json={"text": text, "top_k": top_k, "temperature": temperature},
+            timeout=10
         )
 
         end_time = time.time()
@@ -56,7 +69,7 @@ def predict_next_word(text, top_k, temperature):
         return data
         
     except Exception as e:
-        st.error(str(e))
+        st.error(f"API Error: {str(e)}")
         return None
 
 def generate_text(prompt, length, temperature, top_k):
@@ -70,7 +83,8 @@ def generate_text(prompt, length, temperature, top_k):
                 "length": length,
                 "temperature": temperature,
                 "top_k": top_k
-            }
+            },
+            timeout=15
         )
 
         end_time = time.time()
@@ -81,21 +95,108 @@ def generate_text(prompt, length, temperature, top_k):
         return data
        
     except Exception as e:
-        st.error(str(e))
+        st.error(f"API Error: {str(e)}")
         return None
 
-# Load CSS
-def load_css(file_path: str):
+# CSS LOADING WITH FALLBACK
+def load_css(file_path: str = "assets/style.css"):
+    """Load CSS with inline fallback if file not found"""
     try:
         with open(file_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
-        st.warning("CSS file not found!")
+        # Inline CSS fallback
+        st.markdown("""
+        <style>
+        .main-header {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .prediction-item {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 0.5rem 0;
+            color: white;
+        }
+        
+        .prediction-high {
+            background: #667eea;
+        }
+        
+        .prediction-medium {
+            background: #764ba2;
+        }
+        
+        .prediction-low {
+            background: #f093fb;
+        }
+        
+        .prediction-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .prediction-word {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        .prediction-prob {
+            font-size: 1.2rem;
+        }
+        
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 5px;
+        }
+        
+        .generated-text-box {
+            background: #f0f2f6;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            margin: 1rem 0;
+        }
+        
+        .stats-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 1rem;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+        }
+        
+        .deployment-info {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 1rem 0;
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
-load_css("assets/style.css")
+# Load CSS
+load_css()
 
-# Helper Functions
+# HELPER FUNCTIONS
 def display_prediction(predictions: List[Dict]):
+    """Display predictions with visual styling"""
     for i, pred in enumerate(predictions, 1):
         word = pred['word']
         prob = pred['probability'] * 100
@@ -111,7 +212,7 @@ def display_prediction(predictions: List[Dict]):
         st.markdown(f"""
         <div class="prediction-item {level_class}">
             <div class="prediction-row">
-                <span class="prediction-word">{i}. {word}</span>
+                <span class="prediction-word">#{i}. {word}</span>
                 <span class="prediction-prob">{prob:.2f}%</span>
             </div>
             <div class="progress-bar">
@@ -120,7 +221,18 @@ def display_prediction(predictions: List[Dict]):
         </div>
         """, unsafe_allow_html=True)
 
-# Main
+def show_deployment_info():
+    """Show deployment configuration info"""
+    st.markdown(f"""
+    <div class="deployment-info">
+        <strong>🌐 API Configuration</strong><br>
+        Current API URL: <code>{API_BASE_URL}</code><br>
+        <small>Configure in Streamlit secrets for cloud deployment</small>
+    </div>
+    """, unsafe_allow_html=True)
+
+# MAIN APPLICATION
+
 def main():
     # Header
     st.sidebar.markdown('<h1 class="main-header">Next Word Prediction and Generate System</h1>', unsafe_allow_html=True)
@@ -130,8 +242,30 @@ def main():
     is_healthy, health_data = check_api_health()
 
     if not is_healthy:
-        st.error("⚠ Backend API is not running. Please start the FastAPI server.")
-        st.code("backend/app.py", language="bash")
+        st.error("⚠️ Backend API is not running or not reachable.")
+        
+        # Show current configuration
+        show_deployment_info()
+        
+        # Show connection details
+        with st.expander("🔍 Connection Details"):
+            st.write(f"**Attempting to connect to:** `{API_BASE_URL}`")
+            st.write(f"**Error:** {health_data.get('error', 'Connection timeout')}")
+            st.info("""
+            **For Local Development:**
+            ```bash
+            cd backend
+            python app.py
+            ```
+            
+            **For Cloud Deployment:**
+            1. Deploy backend to Render.com
+            2. Add API URL to Streamlit secrets:
+               ```toml
+               API_BASE_URL = "https://your-backend.onrender.com"
+               ```
+            """)
+        
         st.stop()
 
     # Sidebar
@@ -140,16 +274,20 @@ def main():
 
         # API Status
         st.success("✅ API Connected")
-        if health_data:
+        if health_data and 'error' not in health_data:
             st.info(f"📊 Vocab Size: {health_data.get('vocab_size', 'N/A')}")
             st.info(f"💻 Device: {health_data.get('device', 'N/A')}")
+            
+            # Show API URL in expander
+            with st.expander("🌐 API Info"):
+                st.code(API_BASE_URL)
 
         st.markdown("---")
 
         # Mode Selection
         mode = st.radio(
             "Select Mode:",
-            ["🎯 Next Word Prediction", "✨Text Generation"],
+            ["🎯 Next Word Prediction", "✨ Text Generation"],
             index=0
         )
 
@@ -187,9 +325,14 @@ def main():
             - Backend: FastAPI
             - Frontend: Streamlit
             - Model: LSTM (PyTorch)
+            
+            **Performance:**
+            - Validation Accuracy: 94.13%
+            - Perplexity: 1.92
+            - Response Time: <1s
             """)
 
-    # Main content area
+    # MAIN CONTENT AREA
     if mode == "🎯 Next Word Prediction":
         st.header("🎯 Next Word Prediction")
         st.write("Enter some text and get predictions for the next word!")
@@ -199,7 +342,7 @@ def main():
         with col1:
             input_text = st.text_input(
                 "Enter your text:",
-                placeholder="Type something... e.g., 'The Pakistani rupee",
+                placeholder="Type something... e.g., 'The Pakistani rupee'",
                 key="prediction_input"
             )
 
@@ -211,7 +354,7 @@ def main():
                 result = predict_next_word(input_text, top_k, temperature)
 
                 if result and result.get('success'):
-                    st.success("✅ Production ready!")
+                    st.success("✅ Predictions ready!")
 
                     # Display input
                     st.markdown("### 📝 Your Input:")
@@ -229,10 +372,14 @@ def main():
                         st.markdown('<div class="stats-box"><h3>🌡️</h3><p>Temperature</p><h2>{:.1f}</h2></div>'.format(temperature), unsafe_allow_html=True)
                     with col3:
                         top_prob = result['predictions'][0]['probability'] * 100
-                        st.markdown('<div class="stats-box"><h3>🎯</h3><p>Confidence</p><h2>{:.1f}%<h2></div>'.format(top_prob), unsafe_allow_html=True)
+                        st.markdown('<div class="stats-box"><h3>🎯</h3><p>Confidence</p><h2>{:.1f}%</h2></div>'.format(top_prob), unsafe_allow_html=True)
+                    
+                    # Performance info
+                    if 'total_request_time_ms' in result:
+                        st.caption(f"⚡ Response time: {result['total_request_time_ms']:.0f}ms")
 
         elif predict_button:
-            st.warning("⚠ Please enter some text first!")
+            st.warning("⚠️ Please enter some text first!")
 
         # Examples
         st.markdown("---")
@@ -253,7 +400,8 @@ def main():
                 example,
                 key=f"ex_{i}",
                 on_click=set_example_text,
-                args=(example,)
+                args=(example,),
+                use_container_width=True
             )
 
     else:   # Text Generation Mode
@@ -267,13 +415,13 @@ def main():
             key="generated_prompt"
         )
 
-        col1, col2 = st.columns([1,1])
+        col1, col2 = st.columns([1, 1])
         
         with col1:
-            generated_button = st.button("✨ Generated Text", use_container_width=True)
+            generated_button = st.button("✨ Generate Text", use_container_width=True)
 
         with col2:
-            st.button("Clear", on_click=clear_prompt)
+            st.button("🔄 Clear", on_click=clear_prompt, use_container_width=True)
 
         if generated_button and prompt:
             with st.spinner("Generating text..."):
@@ -283,7 +431,7 @@ def main():
                     st.success("✅ Text generated!")
 
                     # Display generated text
-                    st.markdown("###  📄 Generated Text:")
+                    st.markdown("### 📄 Generated Text:")
                     st.markdown(f"""
                     <div class="generated-text-box">
                         <p style="font-size: 1.2rem; line-height: 1.8; margin: 0;">
@@ -296,13 +444,17 @@ def main():
                     col1, col2, col3 = st.columns(3)
                     word_count = len(result['generated_text'].split())
                     with col1:
-                        st.markdown('<div class="stats-box"><h3>📝</h3><p>Words</p><h2>{}</div>'.format(word_count),unsafe_allow_html=True)
+                        st.markdown('<div class="stats-box"><h3>📝</h3><p>Words</p><h2>{}</h2></div>'.format(word_count), unsafe_allow_html=True)
                     with col2:
-                        st.markdown('<div class="stats-box"><h3>🌡️</h3><p>Temperature</p><h2>{}</div>'.format(temperature),unsafe_allow_html=True)
+                        st.markdown('<div class="stats-box"><h3>🌡️</h3><p>Temperature</p><h2>{:.1f}</h2></div>'.format(temperature), unsafe_allow_html=True)
                     with col3:
-                        st.markdown('<div class="stats-box"><h3>🎲</h3><p>Top-K</p><h2>{}</div>'.format(top_k_gen),unsafe_allow_html=True)
+                        st.markdown('<div class="stats-box"><h3>🎲</h3><p>Top-K</p><h2>{}</h2></div>'.format(top_k_gen), unsafe_allow_html=True)
+                    
+                    # Performance info
+                    if 'total_request_time_ms' in result:
+                        st.caption(f"⚡ Generation time: {result['total_request_time_ms']:.0f}ms")
 
-                    # Copy button
+                    # Download button
                     st.download_button(
                         label="📥 Download Text",
                         data=result['generated_text'],
@@ -331,9 +483,10 @@ def main():
                 p,
                 key=f"prompt_{i}",
                 on_click=set_prompt_text,
-                args=(p,)
+                args=(p,),
+                use_container_width=True
             )
 
-# Run App
+# RUN APP
 if __name__ == "__main__":
     main()
