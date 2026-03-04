@@ -118,10 +118,22 @@ def load_css(file_path: str = "assets/style.css"):
             margin-bottom: 1rem;
         }
         
+        /* Button styling fixes */
+        .stButton button {
+            height: 3rem;
+            align-items: center !important;
+            vertical-align: middle !important;
+        }
+        
+        /* Column alignment fix */
+        .stColumn {
+            align-items: flex-end !important;
+        }
+        
         .prediction-item {
             padding: 1rem;
             border-radius: 10px;
-            margin: 0 rem 0;
+            margin: 0.5rem 0;
             color: white;
         }
         
