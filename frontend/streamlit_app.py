@@ -130,6 +130,18 @@ def load_css(file_path: str = "assets/style.css"):
             align-items: flex-end;
         }
         
+        /* Button styling fixes */
+        .stButton button {
+            height: 3rem;
+            align-items: center !important;
+            vertical-align: middle !important;
+        }
+        
+        /* Column alignment fix */
+        .stColumn {
+            align-items: flex-end !important;
+        }
+        
         .prediction-item {
             padding: 1rem;
             border-radius: 10px;
@@ -571,3 +583,4 @@ def main():
 # RUN APP
 if __name__ == "__main__":
     main()
+    
