@@ -117,6 +117,18 @@ def load_css(file_path: str = "assets/style.css"):
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
         }
+
+        .stButton > button {
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.75rem;
+            }
+
+        div[data-testid="stHorizontalBlock"] {
+            align-items: flex-end;
+        }
         
         .prediction-item {
             padding: 1rem;
