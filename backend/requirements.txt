@@ -4,5 +4,3 @@ pydantic==2.5.3
 torch==2.1.2
 numpy==1.26.3
 python-multipart==0.0.6
-streamlit==1.31.0
-requests==2.31.0
