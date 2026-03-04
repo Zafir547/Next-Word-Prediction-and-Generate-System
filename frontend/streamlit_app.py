@@ -362,6 +362,8 @@ def main():
     if mode == "🎯 Next Word Prediction":
         st.header("🎯 Next Word Prediction")
 
+        st.write("Enter some text and get predictions for the next word!")
+
         # User Guidance - INFO BOX
         st.info("""
         💡 **How to Use for Best Results:**
@@ -370,8 +372,6 @@ def main():
         - Single words or random names won't work well due to specialized training
         - Try the example prompts below! ⬇️
         """)
-
-        st.write("Enter some text and get predictions for the next word!")
 
         col1, col2 = st.columns([3, 1])
 
