@@ -121,7 +121,7 @@ def load_css(file_path: str = "assets/style.css"):
         .prediction-item {
             padding: 1rem;
             border-radius: 10px;
-            margin: 0.5rem 0;
+            margin: 0 rem 0;
             color: white;
         }
         
