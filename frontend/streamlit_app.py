@@ -231,6 +231,32 @@ def show_deployment_info():
     </div>
     """, unsafe_allow_html=True)
 
+def validate_input(text: str) -> tuple:
+    words = text.strip().split()
+
+    # Check 1: Minimum word count
+    if len(words) < 2:
+        return False, "minimum_words"
+    
+    # Check 2: Data vocabulary check
+    dataset_keywords = [
+        'the', 'pakistani', 'rupee', 'bank', 'state', 'reserve', 'coins',
+        'government', 'india', 'pakistan', 'currency', 'paise', 'paisa',
+        'denominations', 'issued', 'introduced', 'ceased', 'legal',
+        'tender', 'monetary', 'system', 'order', 'partition', 'in', 'of',
+        'was', 'were', 'is', 'are', 'and', '1948', '1961', '1972', 'coin',
+        'notes', 'money', 'silver', 'gold', 'nickel', 'word', 'derived',
+        'amendment', 'agreement', 'governments', 'resulted', 'january'
+    ]
+
+    input_lower = text.lower()
+    has_dataset_word = any(keyword in input_lower for keyword in dataset_keywords)
+
+    if not has_dataset_word:
+        return False, "vocabulary_warning"
+    
+    return True, "valid"
+
 # MAIN APPLICATION
 
 def main():
@@ -335,6 +361,16 @@ def main():
     # MAIN CONTENT AREA
     if mode == "🎯 Next Word Prediction":
         st.header("🎯 Next Word Prediction")
+
+        # User Guidance - INFO BOX
+        st.info("""
+        💡 **How to Use for Best Results:**
+        - Use **2-6 words** (not single words)
+        - Use **Pakistani Rupee domain** vocabulary (rupee, bank, coins, government, etc.)
+        - Single words or random names won't work well due to specialized training
+        - Try the example prompts below! ⬇️
+        """)
+
         st.write("Enter some text and get predictions for the next word!")
 
         col1, col2 = st.columns([3, 1])
@@ -343,13 +379,45 @@ def main():
             input_text = st.text_input(
                 "Enter your text:",
                 placeholder="Type something... e.g., 'The Pakistani rupee'",
-                key="prediction_input"
+                key="prediction_input",
+                help="Enter 2-6 words related to Pakistani Rupee for best results"
             )
 
         with col2:
             predict_button = st.button("🔮 Predict", use_container_width=True)
 
         if predict_button and input_text:
+
+            # INPUT VALIDATION
+            is_valid, validation_msg = validate_input(input_text)
+            
+            # Show validation warnings
+            if validation_msg == "minimum_words":
+                st.warning("⚠️ **Please enter at least 2-3 words** for better predictions!")
+                st.info("""
+                💡 **Try these examples:**
+                - 'The Pakistani rupee'
+                - 'State Bank of'
+                - 'In 1948 coins were'
+                """)
+                st.stop()
+            
+            elif validation_msg == "vocabulary_warning":
+                st.warning("⚠️ **Input may be outside training vocabulary!**")
+                st.info("""
+                💡 **This model is specialized for Pakistani Rupee domain.**
+                
+                **Works best with words like:**
+                - Pakistani, rupee, bank, coins, paise
+                - Government, India, Pakistan, state, reserve
+                - Currency, legal, tender, monetary, system
+                - Years: 1948, 1961, 1972
+                
+                **Try the example prompts below for accurate predictions!** ⬇️
+                """)
+                # Continue but with warning shown
+
+            # Proceed with prediction    
             with st.spinner("Predicting..."):
                 result = predict_next_word(input_text, top_k, temperature)
 
@@ -412,7 +480,8 @@ def main():
             "Enter your prompt:",
             placeholder="Type a starting phrase... e.g., 'The Pakistani rupee was'",
             height=100,
-            key="generated_prompt"
+            key="generated_prompt",
+            help="Use domain-related vocabulary for best results"
         )
 
         col1, col2 = st.columns([1, 1])
