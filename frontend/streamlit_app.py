@@ -166,7 +166,7 @@ def load_css(file_path: str = "assets/style.css"):
         }
         
         .generated-text-box {
-            background: #f0f2f6;
+            background: #7a8bad;
             padding: 1.5rem;
             border-radius: 10px;
             border-left: 5px solid #667eea;
