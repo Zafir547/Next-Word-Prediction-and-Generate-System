@@ -244,13 +244,17 @@ def show_deployment_info():
     """, unsafe_allow_html=True)
 
 def validate_input(text: str) -> tuple:
+    """
+    Validate user input for prediction
+    Returns: (is_valid, message_type)
+    """
     words = text.strip().split()
-
+    
     # Check 1: Minimum word count
     if len(words) < 2:
         return False, "minimum_words"
     
-    # Check 2: Data vocabulary check
+    # Check 2: Dataset vocabulary check
     dataset_keywords = [
         'the', 'pakistani', 'rupee', 'bank', 'state', 'reserve', 'coins',
         'government', 'india', 'pakistan', 'currency', 'paise', 'paisa',
@@ -260,10 +264,10 @@ def validate_input(text: str) -> tuple:
         'notes', 'money', 'silver', 'gold', 'nickel', 'word', 'derived',
         'amendment', 'agreement', 'governments', 'resulted', 'january'
     ]
-
+    
     input_lower = text.lower()
     has_dataset_word = any(keyword in input_lower for keyword in dataset_keywords)
-
+    
     if not has_dataset_word:
         return False, "vocabulary_warning"
     
@@ -373,9 +377,7 @@ def main():
     # MAIN CONTENT AREA
     if mode == "🎯 Next Word Prediction":
         st.header("🎯 Next Word Prediction")
-
-        st.write("Enter some text and get predictions for the next word!")
-
+        
         # User Guidance - INFO BOX
         st.info("""
         💡 **How to Use for Best Results:**
@@ -399,7 +401,7 @@ def main():
             predict_button = st.button("🔮 Predict", use_container_width=True)
 
         if predict_button and input_text:
-
+            
             # INPUT VALIDATION
             is_valid, validation_msg = validate_input(input_text)
             
@@ -428,8 +430,8 @@ def main():
                 **Try the example prompts below for accurate predictions!** ⬇️
                 """)
                 # Continue but with warning shown
-
-            # Proceed with prediction    
+            
+            # Proceed with prediction
             with st.spinner("Predicting..."):
                 result = predict_next_word(input_text, top_k, temperature)
 
@@ -567,6 +569,10 @@ def main():
                 args=(p,),
                 use_container_width=True
             )
+
+# RUN APP
+if __name__ == "__main__":
+    main()
 
 # RUN APP
 if __name__ == "__main__":
