@@ -212,7 +212,7 @@ def display_prediction(predictions: List[Dict]):
         st.markdown(f"""
         <div class="prediction-item {level_class}">
             <div class="prediction-row">
-                <span class="prediction-word">#{i}. {word}</span>
+                <span class="prediction-word">{i}. {word}</span>
                 <span class="prediction-prob">{prob:.2f}%</span>
             </div>
             <div class="progress-bar">
