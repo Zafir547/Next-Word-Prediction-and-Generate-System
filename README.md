@@ -139,6 +139,8 @@ Generation Text Result:
 
 ![Project Screenshot](images/txt-gen-result.JPG)
 
+Demo Live: https://next-word-prediction-and-generate-system-6pkhc2ayshrywvucmu3us.streamlit.app
+
 ---
 
 ## 🚀 Future Improvements
