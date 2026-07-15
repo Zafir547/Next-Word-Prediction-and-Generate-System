@@ -1,41 +1,157 @@
-# Next-Word-Prediction-and-Generate-System
+# 🚀 Next Word Prediction & Text Generation System
 
-Built a complete client-server application that predicts the next word in a sequence using Deep Learning.
+A production-ready **Next Word Prediction and Text Generation System** built using **PyTorch, FastAPI, and Streamlit**. This full-stack application predicts the next word in real time and generates contextual text through a modern client-server architecture.
 
-✅ Project Highlights:
-```bash
-🎯 94.13% validation accuracy
-🚀 <1 second response time
-💻 Full-stack implementation
-📊 Client-server architecture
+The model was trained from scratch on a **Pakistani Rupee domain-specific corpus**, demonstrating how specialized NLP models can outperform general-purpose approaches for targeted applications.
+
+---
+
+## 🎯 Project Highlights
+
+```text
+🎯 94.13% Validation Accuracy
+⚡ <1 Second Response Time
+🧠 Custom LSTM Neural Network
+🌐 Full-Stack Client-Server Architecture
+🚀 Production-Ready REST API
 ```
 
-🔧 Technical Stack:
-```bash
-→ Backend: FastAPI with RESTful APIs
-→ Frontend: Streamlit with interactive UI
-→ Model: LSTM Neural Network (PyTorch)
-→ Dataset: Pakistani Rupee corpus
+---
+
+## 🛠️ Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Backend | FastAPI |
+| Frontend | Streamlit |
+| Deep Learning | PyTorch |
+| Model | LSTM Neural Network |
+| API | RESTful API |
+| Dataset | Pakistani Rupee Domain Corpus |
+
+---
+
+## ✨ Features
+
+- 🔮 Real-time Next Word Prediction
+- 📊 Prediction Confidence Scores
+- ✍️ AI-powered Text Generation
+- 🎛 Adjustable Creativity (Temperature)
+- 📖 Interactive Streamlit Web Interface
+- 📄 FastAPI Auto-generated API Documentation
+- ⚡ Low-latency Inference
+
+---
+
+## 📈 Performance Metrics
+
+| Metric | Value |
+|--------|-------|
+| Validation Accuracy | **94.13%** |
+| Perplexity | **1.92** |
+| Response Time | **< 1 Second** |
+| Model Size | **~30K Parameters** |
+
+---
+
+## 🧠 Model Architecture
+
+- Custom LSTM Neural Network
+- 32-Dimensional Word Embeddings
+- 64 Hidden Units
+- ~30K Trainable Parameters
+- Built entirely from scratch using PyTorch
+- Trained without pretrained language models
+
+---
+
+## 💡 Challenges & Solutions
+
+| Challenge | Solution |
+|-----------|----------|
+| Small Dataset | Data Augmentation (3×) |
+| Overfitting | Early Stopping & Dropout |
+| Slow Inference | Optimized Real-time Prediction |
+| Deployment | Frontend-Backend Separation using FastAPI & Streamlit |
+
+---
+
+## 🎯 Domain-Specific NLP
+
+Rather than using a general-purpose language model, this project focuses on a **Pakistani Rupee financial corpus** to demonstrate domain specialization.
+
+Example inputs:
+
+```text
+"The Pakistani rupee"
+"State Bank of Pakistan"
+"In 1948 coins were"
 ```
 
-✨ Key Features:
-```bash
-✓ Real-time word predictions with confidence scores
-✓ Text generation with adjustable parameters
-✓ Professional API with auto-documentation
-✓ Beautiful, responsive web interface
+The model produces contextual next-word predictions and generates coherent text based on financial-domain knowledge.
+
+---
+
+## 🔬 ML Pipeline
+
+```text
+Data Collection
+        │
+        ▼
+Data Preprocessing
+        │
+        ▼
+Vocabulary Building
+        │
+        ▼
+LSTM Model Training
+        │
+        ▼
+Model Evaluation
+        │
+        ▼
+FastAPI Backend
+        │
+        ▼
+Streamlit Frontend
 ```
 
-📊 Performance Metrics:
-```bash
-- Validation Accuracy: 94.13%
-- Perplexity: 1.92
-- Response Time: <1 second
-```
+---
 
-💡 Challenges Overcome:
-```bash
-→ Small dataset optimization through data augmentation
-→ Overfitting prevention with early stopping
-→ Real-time prediction with low latency
-```
+## 📹 Demo
+
+The demo showcases:
+
+- ✅ Next Word Prediction
+- ✅ AI Text Generation
+- ✅ Confidence Scores
+- ✅ Interactive Web Interface
+- ✅ FastAPI REST APIs
+- ✅ End-to-End Client-Server Workflow
+
+> demo project here.
+
+NextWord Prediction Results:
+
+![Project Screenshot](images/image-denoised.JPG)
+
+![Project Screenshot](images/image-denoised.JPG)
+
+Generation Text Result:
+
+![Project Screenshot](images/image-denoised.JPG)
+
+---
+
+## 🚀 Future Improvements
+
+- Transformer-based Language Models
+- Larger Financial Dataset
+- Docker Containerization
+- MLflow Model Versioning
+- CI/CD Deployment Pipeline
+- User Authentication
+
+---
+
+## ⭐ If you found this project useful, consider giving it a Star!
