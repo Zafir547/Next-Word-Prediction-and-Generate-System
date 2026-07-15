@@ -129,6 +129,8 @@ The demo showcases:
 - ✅ FastAPI REST APIs
 - ✅ End-to-End Client-Server Workflow
 
+Demo Live: https://next-word-prediction-and-generate-system-6pkhc2ayshrywvucmu3us.streamlit.app
+
 NextWord Prediction Results:
 
 ![Project Screenshot](images/nextword-predicted-result.JPG)
@@ -138,8 +140,6 @@ NextWord Prediction Results:
 Generation Text Result:
 
 ![Project Screenshot](images/txt-gen-result.JPG)
-
-Demo Live: https://next-word-prediction-and-generate-system-6pkhc2ayshrywvucmu3us.streamlit.app
 
 ---
 
