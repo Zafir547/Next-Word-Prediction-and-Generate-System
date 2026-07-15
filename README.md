@@ -129,17 +129,15 @@ The demo showcases:
 - ✅ FastAPI REST APIs
 - ✅ End-to-End Client-Server Workflow
 
-> demo project here.
-
 NextWord Prediction Results:
 
-![Project Screenshot](images/image-denoised.JPG)
+![Project Screenshot](images/nextword-predicted-result.JPG)
 
-![Project Screenshot](images/image-denoised.JPG)
+![Project Screenshot](images/results-2.JPG)
 
 Generation Text Result:
 
-![Project Screenshot](images/image-denoised.JPG)
+![Project Screenshot](images/txt-gen-result.JPG)
 
 ---
 
